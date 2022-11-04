@@ -9,11 +9,14 @@ public class Card {
         this.cardNumber = cardNumber;
     }
 
+    public void setCardNumber(int cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
     public int getCardNumber() {
         return cardNumber;
     }
-
-    public void setCardNumber(int cardNumber) {
-        this.cardNumber = cardNumber;
+    public int getCardId() {
+        return cardId;
     }
 }
