@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 
 public class Player {
-    public int PlayerID;
+    private int PlayerID;
     private ArrayList<Card> Cards = new ArrayList<>();
+
     Player(int PlayerID) {
         this.PlayerID = PlayerID;
     }
+
     public void AddCard(Card card){
         this.Cards.add(card);
     }
