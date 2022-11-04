@@ -8,4 +8,12 @@ public class Card {
         this.cardId = id++;
         this.cardNumber = cardNumber;
     }
+
+    public int getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(int cardNumber) {
+        this.cardNumber = cardNumber;
+    }
 }
