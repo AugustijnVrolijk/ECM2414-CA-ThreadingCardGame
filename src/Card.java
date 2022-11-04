@@ -1,6 +1,6 @@
 public class Card {
 
-    private int id;
+    private static int id;
     private int cardId;
     private int cardNumber;
 
