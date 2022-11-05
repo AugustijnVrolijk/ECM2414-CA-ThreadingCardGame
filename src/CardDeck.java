@@ -2,12 +2,11 @@ import java.util.ArrayList;
 
 public class CardDeck {
 
-    private static int id = 0;
     public int deckId;
     private ArrayList<Card> cardList = new ArrayList<>();
 
-    CardDeck(){
-        this.deckId = id++;
+    CardDeck(int deckId){
+        this.deckId = deckId;
     }
 
     private void addCard(Card card) {

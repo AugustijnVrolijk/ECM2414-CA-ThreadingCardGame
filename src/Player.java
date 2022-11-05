@@ -1,28 +1,27 @@
 import java.util.ArrayList;
 
 public class Player {
-    private int PlayerID;
-    private ArrayList<Card> Cards = new ArrayList<>();
+    private int playerId;
+    private ArrayList<Card> cards = new ArrayList<>();
 
-    Player(int PlayerID) {
-        this.PlayerID = PlayerID;
+    Player(int playerId) {
+        this.playerId = playerId;
     }
 
-    public void AddCard(Card card){
-        this.Cards.add(card);
+    public void addCard(Card card){
+        this.cards.add(card);
     }
-    public Card RemoveCard(Card card) {
-        this.Cards.remove(card);
+    public Card removeCard(Card card) {
+        this.cards.remove(card);
         return card;
     }
-    public boolean CheckHand() {
+    public boolean checkHand() {
         int x = 0;
-        for (int i = 0; i < Cards.size()-1; i++) {
-            if (Cards.get(i).getCardNumber() != Cards.get(i+1).getCardNumber()){
+        for (int i = 0; i < cards.size()-1; i++) {
+            if (cards.get(i).getCardNumber() != cards.get(i+1).getCardNumber()){
                 return false;
             }
         }
         return true;
     }
-
 }

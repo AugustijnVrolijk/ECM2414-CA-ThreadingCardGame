@@ -1,15 +1,10 @@
 public class Card {
 
-    private static int id = 0;
     private int cardId;
     private int cardNumber;
 
-    public Card(int cardNumber) {
-        this.cardId = id++;
-        this.cardNumber = cardNumber;
-    }
-
-    public void setCardNumber(int cardNumber) {
+    public Card(int cardNumber, int cardId) {
+        this.cardId = cardId;
         this.cardNumber = cardNumber;
     }
 
