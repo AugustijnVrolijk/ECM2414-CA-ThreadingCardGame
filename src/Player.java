@@ -31,7 +31,6 @@ public class Player {
         return card;
     }
     public boolean checkHand() {
-        int x = 0;
         for (int i = 0; i < cards.size()-1; i++) {
             if (cards.get(i).getCardNumber() != cards.get(i+1).getCardNumber()){
                 return false;
@@ -39,5 +38,9 @@ public class Player {
         }
         appendToOutputFile(String.format("player %d wins",this.playerId), true);
         return true;
+    }
+
+    public ArrayList<Card> getCards() {
+        return cards;
     }
 }
