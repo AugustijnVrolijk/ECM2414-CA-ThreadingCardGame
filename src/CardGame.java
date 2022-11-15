@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 public class CardGame {
 
-    private HashMap<Integer,Player> players = new HashMap<>();
-    private HashMap<Integer,Card> cards = new HashMap<>();
+    private HashMap<Integer, Player> players = new HashMap<>();
+    private HashMap<Integer, Card> cards = new HashMap<>();
 
     public CardGame() throws IOException {
         startGame();
@@ -19,11 +19,16 @@ public class CardGame {
         CardGame game = new CardGame();
     }
 
+
     public void startGame() throws IOException {
-        Boolean validPlayers = false;
         Scanner userInput = new Scanner(System.in);  // Create a Scanner object
         System.out.println("Please enter location of pack to load:");
         String fileName = userInput.nextLine(); // Read user input
+        if(checkPack(fileName)){
+            readPack(fileName);
+        } else {
+            System.out.println("Pack Invalid");
+        }
 
         System.out.println("Please enter the number of players:");
         try {
@@ -31,20 +36,21 @@ public class CardGame {
         } catch (InputMismatchException e) {
             System.out.println("Invalid input for players");
         }
-        readPack(fileName);
 
     }
 
-    public void checkPack(String fileName) {
-        // todo
-        // needs to be at least size 8n
-        // all must be non zero
+    public boolean checkPack(String fileName) {
+        boolean valid = true;
+
+
+        return valid;
     }
 
     public void readPack(String fileName) throws IOException {
 
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         String line = br.readLine();
+
 
         while ((line = br.readLine()) != null) {
             int cardNum = Integer.parseInt(line);
@@ -55,7 +61,6 @@ public class CardGame {
     }
 
     public void setUpGame(int NumPlayers) {
-        // todo
 
     }
 
