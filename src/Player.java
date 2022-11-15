@@ -7,12 +7,10 @@ public class Player {
 
     Player(int playerId) {
         this.playerId = playerId;
-        if(new File("../player\"+String.valueOf(this.playerId)+\"_output.txt").isFile()) {
-
-        }
-        else {
-            outputFile = new File("../player" + String.valueOf(this.playerId) + "_output.txt");
-        }
+        String basePath = (new File("")).getAbsolutePath();
+        boolean dir = (new File("outputTextFiles")).mkdir();
+        this.outputFile = new File(String.format("%s/outputTextFiles/player%d_output.txt", basePath, this.playerId));
+        this.appendToOutputFile(String.format("Player %d enters the game", this.playerId), false);
     }
     private void appendToOutputFile(String text, boolean append) {
         try (FileWriter f = new FileWriter(outputFile, append);
