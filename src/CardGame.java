@@ -33,15 +33,13 @@ public class CardGame {
         }
 
         System.out.println("Please enter location of pack to load:");
+        userInput.nextLine();
         String fileName = userInput.nextLine(); // Read user input
-        // todo - why tf does this not work with a string but is fine with a fucking int
         if(checkPack(numPlayers, fileName)){ // check if pack is valid before reading
             readPack(fileName);
         } else {
             System.out.println("Pack Invalid");
         }
-
-
 
     }
 
@@ -63,20 +61,19 @@ public class CardGame {
                     // error will happen if the line does not contain a number
                     valid = false;
                 }
-
                 if (cardNum == 0) {
                     valid = false;
                 }
             }
+
             if (lineNum < (8 * numPlayers)){
                 // checks that there are enough cards in the pack
                 valid = false;
             }
+
         } catch (FileNotFoundException e) {
             valid = false;
         }
-
-
         return valid;
     }
 
@@ -92,8 +89,4 @@ public class CardGame {
             cards.put(id, card); // adds to hashmap cards in CardGame
         }
     }
-
-
-
-
 }
