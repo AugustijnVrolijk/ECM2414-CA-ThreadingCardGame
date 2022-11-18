@@ -4,7 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class CardGame {
+public class CardGame{
 
     // have added a hash map so you can access decks and players easily by id
     private HashMap<Integer, Player> players = new HashMap<>();
@@ -16,14 +16,12 @@ public class CardGame {
         setUpGame();
     }
 
-    public CardGame(String test){
-
-    }
+    // constructor for test classes to test individual functions rather than running code
+    public CardGame(String test){}
 
     public static void main(String[] args) throws IOException {
         CardGame game = new CardGame();
     }
-
 
     public void setUpGame() throws IOException {
 
@@ -47,39 +45,16 @@ public class CardGame {
             System.out.println("Pack Invalid");
         }
 
-        // create deck and player objects
-        for (int i = 0; i < numPlayers; i++){
-            int id = players.size();
-
-            Player player = new Player(id);
-            players.put(id,player);
-
-            CardDeck deck = new CardDeck(id);
-            decks.put(id, deck);
-        }
-
-        // deals 4 cards to each player
-        Collections.shuffle(cards);
-        for (int i = 0; i < 4; i++){
-            for (Player player : players.values()){
-                player.addCard(cards.get(0));
-                cards.remove(0);
-            }
-        }
-
-        // adds initial hand to output file of each player
-        for (Player player: players.values()){
-            player.appendInitialHand();
-        }
-
-        // deals the rest to each deck of cards
-        for (CardDeck deck: decks.values()){
-            try {
-                deck.addCard(cards.get(0));
-            } catch (IndexOutOfBoundsException ignored) {}
-        }
+        initialisePlayersAndDecks(numPlayers);
+        dealCards();
+        startPlayers(); //start threads
 
     }
+
+    public synchronized void startPlayers() {
+        for (Player player: players.values()){player.start();}
+    }
+
 
     public boolean checkPack(int numPlayers, String fileName) throws IOException {
 
@@ -132,5 +107,39 @@ public class CardGame {
         }
     }
 
+    public void initialisePlayersAndDecks(int numPlayers){
+        for (int i = 0; i < numPlayers; i++){
+            int id = players.size();
+
+            Player player = new Player(id); // thread created
+            players.put(id,player);
+
+            CardDeck deck = new CardDeck(id);
+            decks.put(id, deck);
+        }
+    }
+
+    public void dealCards(){
+        // deals 4 cards to each player
+        Collections.shuffle(cards);
+        for (int i = 0; i < 4; i++){
+            for (Player player : players.values()){
+                player.addCard(cards.get(0));
+                cards.remove(0);
+            }
+        }
+
+        // adds initial hand to output file of each player
+        for (Player player: players.values()){
+            player.appendInitialHand();
+        }
+
+        // deals the rest to each deck of cards
+        for (CardDeck deck: decks.values()){
+            try {
+                deck.addCard(cards.get(0));
+            } catch (IndexOutOfBoundsException ignored) {}
+        }
+    }
 
 }

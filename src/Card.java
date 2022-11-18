@@ -8,7 +8,7 @@ public class Card {
         this.cardNumber = cardNumber;
     }
 
-    public int getCardNumber() {
+    public synchronized int getCardNumber() {
         return cardNumber;
     }
     public int getCardId() {

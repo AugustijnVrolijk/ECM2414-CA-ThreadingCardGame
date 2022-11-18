@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.io.*;
-public class Player {
+public class Player extends Thread {
     private int playerId;
     private ArrayList<Card> cards = new ArrayList<>();
     private File outputFile;
@@ -12,6 +12,15 @@ public class Player {
         outputFile = new File(String.format("%s/outputTextFiles/player%d_output.txt", basePath, playerId));
         appendToOutputFile(String.format("Player %d enters the game", playerId), false);
     }
+
+    public void appendInitialHand(){
+        appendToOutputFile(String.format("player %d initial hand %d %d %d %d",playerId,
+                cards.get(0).getCardNumber(),
+                cards.get(1).getCardNumber(),
+                cards.get(2).getCardNumber(),
+                cards.get(3).getCardNumber()), true);
+    }
+
     private void appendToOutputFile(String text, boolean append) {
         try (FileWriter f = new FileWriter(outputFile, append);
              BufferedWriter b = new BufferedWriter(f);
@@ -24,23 +33,19 @@ public class Player {
         cards.add(card);
     }
 
-    public void drawCard(Card card, int deckId){
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
+    public synchronized void drawCard(Card card, int deckId){
         cards.add(card);
         appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, card.getCardNumber(), deckId), true);
     }
 
-    public Card discardCard(Card card, int deckId) {
+    public synchronized Card discardCard(Card card, int deckId) {
         cards.remove(card);
         appendToOutputFile(String.format("player %d discards a %d to deck %d",playerId, card.getCardNumber(), deckId), true);
         return card;
-    }
-    public void appendInitialHand(){
-
-        appendToOutputFile(String.format("player %d initial hand %d %d %d %d",playerId,
-                cards.get(0).getCardNumber(),
-                cards.get(1).getCardNumber(),
-                cards.get(2).getCardNumber(),
-                cards.get(3).getCardNumber()), true);
     }
 
     public boolean checkHand() {
@@ -53,7 +58,9 @@ public class Player {
         return true;
     }
 
-    public ArrayList<Card> getCards() {
-        return cards;
+    public void run(){
+        // get card from deck and discard card to next deck
+
     }
+
 }
