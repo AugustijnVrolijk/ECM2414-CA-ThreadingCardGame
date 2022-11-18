@@ -6,14 +6,13 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-
 public class CardGame {
 
     private HashMap<Integer, Player> players = new HashMap<>();
     private HashMap<Integer, Card> cards = new HashMap<>();
 
     public CardGame() throws IOException {
-        startGame();
+        setUpGame();
     }
 
     public static void main(String[] args) throws IOException {
@@ -21,7 +20,7 @@ public class CardGame {
     }
 
 
-    public void startGame() throws IOException {
+    public void setUpGame() throws IOException {
         Scanner userInput = new Scanner(System.in);  // Create a Scanner object
         int numPlayers = 0;
 
@@ -41,6 +40,7 @@ public class CardGame {
             System.out.println("Pack Invalid");
         }
 
+        createPlayers(numPlayers);
     }
 
     public boolean checkPack(int numPlayers, String fileName) throws IOException {
@@ -87,6 +87,22 @@ public class CardGame {
             int id = cards.size();
             Card card = new Card(cardNum,id); // creates card object
             cards.put(id, card); // adds to hashmap cards in CardGame
+        }
+    }
+
+    public void createPlayers(int numPlayers){
+        for (int i = 0; i < numPlayers; i++){
+            int id = players.size();
+            Player player = new Player(id);
+            players.put(id,player);
+        }
+    }
+
+    public void dealCards() {
+        for (int i = 0; i < 4; i++){
+            for (Player player : players.values()){
+
+            }
         }
     }
 }
