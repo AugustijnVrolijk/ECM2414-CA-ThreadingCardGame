@@ -16,6 +16,10 @@ public class CardGame {
         setUpGame();
     }
 
+    public CardGame(String test){
+
+    }
+
     public static void main(String[] args) throws IOException {
         CardGame game = new CardGame();
     }
@@ -83,14 +87,16 @@ public class CardGame {
             String line = br.readLine();
 
             while ((line = br.readLine()) != null) {
-                lineNum ++; // count lines
+                lineNum++; // count lines
                 try {
                     cardNum = Integer.parseInt(line);
                 } catch (NumberFormatException e) {
+                    System.out.println("Pack contains non-int");
                     // error will happen if the line does not contain a number
                     valid = false;
                 }
                 if (cardNum == 0) {
+                    System.out.println("Pack contains 0");
                     valid = false;
                 }
             }
@@ -98,10 +104,12 @@ public class CardGame {
             if (lineNum < (8 * numPlayers)){
                 // checks that there are enough cards in the pack
                 valid = false;
+                System.out.println("Pack does not contain enough cards");
             }
 
         } catch (FileNotFoundException e) {
             valid = false;
+            System.out.println("File not found");
         }
         return valid;
     }
