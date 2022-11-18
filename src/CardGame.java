@@ -2,14 +2,15 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class CardGame {
 
     private HashMap<Integer, Player> players = new HashMap<>();
-    private HashMap<Integer, Card> cards = new HashMap<>();
+    private HashMap<Integer, CardDeck> decks = new HashMap<>();
+
+    private ArrayList<Card> cards = new ArrayList<>();
+
 
     public CardGame() throws IOException {
         setUpGame();
@@ -21,6 +22,8 @@ public class CardGame {
 
 
     public void setUpGame() throws IOException {
+
+        // get num of players and pack file name from user
         Scanner userInput = new Scanner(System.in);  // Create a Scanner object
         int numPlayers = 0;
 
@@ -40,7 +43,33 @@ public class CardGame {
             System.out.println("Pack Invalid");
         }
 
-        createPlayers(numPlayers);
+        // create deck and player objects
+        for (int i = 0; i < numPlayers; i++){
+            int id = players.size();
+
+            Player player = new Player(id);
+            players.put(id,player);
+
+            CardDeck deck = new CardDeck(id);
+            decks.put(id, deck);
+        }
+
+        // deals 4 cards to each player
+        Collections.shuffle(cards);
+        for (int i = 0; i < 4; i++){
+            for (Player player : players.values()){
+                player.drawCard(cards.get(0));
+                cards.remove(0);
+            }
+        }
+
+        // deals the rest to each deck of cards
+        for (CardDeck deck: decks.values()){
+            try {
+                deck.addCard(cards.get(0));
+            } catch (IndexOutOfBoundsException ignored) {}
+        }
+
     }
 
     public boolean checkPack(int numPlayers, String fileName) throws IOException {
@@ -86,23 +115,9 @@ public class CardGame {
             int cardNum = Integer.parseInt(line); // get card num from file
             int id = cards.size();
             Card card = new Card(cardNum,id); // creates card object
-            cards.put(id, card); // adds to hashmap cards in CardGame
+            cards.add(card); // adds to hashmap cards in CardGame
         }
     }
 
-    public void createPlayers(int numPlayers){
-        for (int i = 0; i < numPlayers; i++){
-            int id = players.size();
-            Player player = new Player(id);
-            players.put(id,player);
-        }
-    }
 
-    public void dealCards() {
-        for (int i = 0; i < 4; i++){
-            for (Player player : players.values()){
-
-            }
-        }
-    }
 }

@@ -9,10 +9,10 @@ public class CardDeck {
         this.deckId = deckId;
     }
 
-    private void addCard(Card card) {
+    public void addCard(Card card) {
         cardList.add(card);
     }
-    private Card removeCard(Card card) {
+    public Card removeCard(Card card) {
         cardList.remove(card);
         return card;
     }
