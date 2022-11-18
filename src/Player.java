@@ -9,8 +9,8 @@ public class Player {
         this.playerId = playerId;
         String basePath = (new File("")).getAbsolutePath();
         boolean dir = (new File("outputTextFiles")).mkdir();
-        this.outputFile = new File(String.format("%s/outputTextFiles/player%d_output.txt", basePath, this.playerId));
-        this.appendToOutputFile(String.format("Player %d enters the game", this.playerId), false);
+        outputFile = new File(String.format("%s/outputTextFiles/player%d_output.txt", basePath, playerId));
+        appendToOutputFile(String.format("Player %d enters the game", playerId), false);
     }
     private void appendToOutputFile(String text, boolean append) {
         try (FileWriter f = new FileWriter(outputFile, append);
@@ -19,15 +19,30 @@ public class Player {
             p.println(text); }
         catch (IOException i) { i.printStackTrace(); }
     }
-    public void drawCard(Card card){
+
+    public void addCard(Card card){
         cards.add(card);
-        appendToOutputFile(String.format("player %d draws a %d from deck %d",this.playerId, card.getCardNumber(), 1), true); //replace 1 with the card deck id
     }
-    public Card discardCard(Card card) {
+
+    public void drawCard(Card card, int deckId){
+        cards.add(card);
+        appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, card.getCardNumber(), deckId), true);
+    }
+
+    public Card discardCard(Card card, int deckId) {
         cards.remove(card);
-        appendToOutputFile(String.format("player %d discards a %d to deck %d",this.playerId, card.getCardNumber(), 1), true); //replace 1 with the card deck id
+        appendToOutputFile(String.format("player %d discards a %d to deck %d",playerId, card.getCardNumber(), deckId), true);
         return card;
     }
+    public void appendInitialHand(){
+
+        appendToOutputFile(String.format("player %d initial hand %d %d %d %d",playerId,
+                cards.get(0).getCardNumber(),
+                cards.get(1).getCardNumber(),
+                cards.get(2).getCardNumber(),
+                cards.get(3).getCardNumber()), true);
+    }
+
     public boolean checkHand() {
         for (int i = 0; i < cards.size()-1; i++) {
             if (cards.get(i).getCardNumber() != cards.get(i+1).getCardNumber()){

@@ -62,9 +62,14 @@ public class CardGame {
         Collections.shuffle(cards);
         for (int i = 0; i < 4; i++){
             for (Player player : players.values()){
-                player.drawCard(cards.get(0));
+                player.addCard(cards.get(0));
                 cards.remove(0);
             }
+        }
+
+        // adds initial hand to output file of each player
+        for (Player player: players.values()){
+            player.appendInitialHand();
         }
 
         // deals the rest to each deck of cards

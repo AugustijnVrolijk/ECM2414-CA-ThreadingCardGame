@@ -25,22 +25,22 @@ public class TestPlayer {
 
     @Test
     public void testDrawCard() {
-        player.drawCard(card);
+        player.addCard(card);
         assert (player.getCards().size()==1);
     }
 
     @Test
     public void testDiscardCard() {
-        player.discardCard(card);
+        player.discardCard(card,0);
         assert (player.getCards().size()==0);
     }
 
     @Test
     public void testCheckHand() {
-        player.drawCard(card);
-        player.drawCard(card1);
-        player.drawCard(card2);
-        player.drawCard(card3);
+        player.addCard(card);
+        player.addCard(card1);
+        player.addCard(card2);
+        player.addCard(card3);
         assert player.checkHand();
     }
 }
