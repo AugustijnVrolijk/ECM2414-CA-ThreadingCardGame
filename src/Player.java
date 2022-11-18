@@ -4,6 +4,8 @@ public class Player extends Thread {
     private int playerId;
     private ArrayList<Card> cards = new ArrayList<>();
     private File outputFile;
+    private CardDeck deckBefore;
+    private CardDeck deckAfter;
 
     Player(int playerId) {
         this.playerId = playerId;
@@ -37,9 +39,10 @@ public class Player extends Thread {
         return cards;
     }
 
-    public synchronized void drawCard(Card card, int deckId){
+    public synchronized Card drawCard(Card card, int deckId){
         cards.add(card);
         appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, card.getCardNumber(), deckId), true);
+        return card;
     }
 
     public synchronized Card discardCard(Card card, int deckId) {
@@ -58,9 +61,18 @@ public class Player extends Thread {
         return true;
     }
 
-    public void run(){
-        // get card from deck and discard card to next deck
-
+    public void setDeckBefore(CardDeck deckBefore) {
+        this.deckBefore = deckBefore;
+    }
+    public void setDeckAfter(CardDeck deckAfter) {
+        this.deckAfter = deckAfter;
     }
 
+
+    public synchronized void run(){
+        while(true){
+            deckAfter.addCard(discardCard(cards.get(0), deckAfter.getDeckId()));
+            deckBefore.removeCard(drawCard(deckBefore.getCardList().get(0),deckBefore.getDeckId()));
+        }
+    }
 }

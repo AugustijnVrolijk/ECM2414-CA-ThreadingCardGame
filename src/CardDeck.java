@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class CardDeck {
 
-    public int deckId;
+    private int deckId;
     private ArrayList<Card> cardList = new ArrayList<>();
 
     CardDeck(int deckId){
