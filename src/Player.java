@@ -6,6 +6,7 @@ public class Player extends Thread {
     private File outputFile;
     private CardDeck deckBefore;
     private CardDeck deckAfter;
+    private boolean running = true;
 
     Player(int playerId) {
         this.playerId = playerId;
@@ -68,11 +69,18 @@ public class Player extends Thread {
         this.deckAfter = deckAfter;
     }
 
+    public synchronized void stopPlayer(){
+        running = false;
+        notify();
+    }
+
 
     public synchronized void run(){
-        while(true){
-            deckAfter.addCard(discardCard(cards.get(0), deckAfter.getDeckId()));
+        while(running){
             deckBefore.removeCard(drawCard(deckBefore.getCardList().get(0),deckBefore.getDeckId()));
+            deckAfter.addCard(discardCard(cards.get(0), deckAfter.getDeckId()));
         }
+
+
     }
 }

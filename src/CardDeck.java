@@ -9,18 +9,18 @@ public class CardDeck {
         this.deckId = deckId;
     }
 
-    public void addCard(Card card) {
+    public synchronized void addCard(Card card) {
         cardList.add(card);
     }
-    public Card removeCard(Card card) {
+    public synchronized Card removeCard(Card card) {
         cardList.remove(card);
         return card;
     }
 
-    public ArrayList<Card> getCardList() {
+    public synchronized ArrayList<Card> getCardList() {
         return cardList;
     }
-    public int getDeckId() {
+    public synchronized int getDeckId() {
         return deckId;
     }
 }
