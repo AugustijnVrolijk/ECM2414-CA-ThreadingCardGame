@@ -72,6 +72,7 @@ public class Player extends Thread {
     public synchronized void stopPlayer(){
         running = false;
         notify();
+        // need to check hand somewhere and notify other players that that player has won
     }
 
 
