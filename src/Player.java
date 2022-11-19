@@ -6,7 +6,7 @@ public class Player extends Thread {
     private File outputFile;
     private CardDeck deckBefore;
     private CardDeck deckAfter;
-    private static boolean winner = false;
+    private static boolean isWinner = false;
 
     Player(int playerId) {
         this.playerId = playerId;
@@ -70,20 +70,22 @@ public class Player extends Thread {
     }
 
     public synchronized void stopPlayers(){
-        winner = true;
+        isWinner = true;
+        // static variables kinda confuse me for some reason but pretty sure this is how it works
+        // isWinner is a static variable in the player class which extends thread
+        // so when that variable is changed to true and all threads are notified, they should all stop running
         notifyAll();
-        // need to check hand somewhere and notify other players that that player has won
     }
 
 
     public synchronized void run(){
-        while(!winner){
+        while(!isWinner){
             deckBefore.removeCard(drawCard(deckBefore.getCardList().get(0),deckBefore.getDeckId()));
             deckAfter.addCard(discardCard(cards.get(0), deckAfter.getDeckId()));
             if (checkHand()){
                 stopPlayers();
             }
-            // add correct output to string
+            // add correct output to string to player
         }
 
 
