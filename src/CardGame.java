@@ -6,7 +6,7 @@ import java.util.*;
 
 public class CardGame{
 
-    // have added a hash map so you can access decks and players easily by id
+    // have added a hash map to access decks and players easily by id
     private HashMap<Integer, Player> players = new HashMap<>();
     private HashMap<Integer, CardDeck> decks = new HashMap<>();
     private ArrayList<Card> cards = new ArrayList<>();
