@@ -52,7 +52,7 @@ public class Player extends Thread {
         return card;
     }
 
-    public boolean checkHand() {
+    public synchronized boolean checkHand() {
         for (int i = 0; i < cards.size()-1; i++) {
             if (cards.get(i).getCardNumber() != cards.get(i+1).getCardNumber()){
                 return false;
