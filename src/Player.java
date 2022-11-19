@@ -6,7 +6,7 @@ public class Player extends Thread {
     private File outputFile;
     private CardDeck deckBefore;
     private CardDeck deckAfter;
-    private boolean running = true;
+    private static boolean winner = false;
 
     Player(int playerId) {
         this.playerId = playerId;
@@ -69,17 +69,21 @@ public class Player extends Thread {
         this.deckAfter = deckAfter;
     }
 
-    public synchronized void stopPlayer(){
-        running = false;
-        notify();
+    public synchronized void stopPlayers(){
+        winner = true;
+        notifyAll();
         // need to check hand somewhere and notify other players that that player has won
     }
 
 
     public synchronized void run(){
-        while(running){
+        while(!winner){
             deckBefore.removeCard(drawCard(deckBefore.getCardList().get(0),deckBefore.getDeckId()));
             deckAfter.addCard(discardCard(cards.get(0), deckAfter.getDeckId()));
+            if (checkHand()){
+                stopPlayers();
+            }
+            // add correct output to string
         }
 
 
