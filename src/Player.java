@@ -53,14 +53,14 @@ public class Player extends Thread {
     public synchronized Card drawCard() {
         for(int i = 0; i < deckBefore.getCardList().size(); i++) {
             if (deckBefore.getCardList().get(i).getCardNumber() == preferredCard) {
-                System.out.println("player "+ playerId + "has drawn a ");
+                System.out.println("player "+ playerId + " has drawn a " + deckBefore.getCardList().get(i).getCardNumber());
                 cards.add(deckBefore.getCardList().get(i));
                 appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, deckBefore.getCardList().get(i).getCardNumber(), deckBefore.getDeckId()), true);
                 return deckBefore.getCardList().get(i);
             }
         }
-        System.out.println("card drawn for " + playerId);
         int i = rand.nextInt(deckBefore.getCardList().size());
+        System.out.println("player "+ playerId + " has drawn a " + deckBefore.getCardList().get(i).getCardNumber());
         cards.add(deckBefore.getCardList().get(i));
         appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, deckBefore.getCardList().get(i).getCardNumber(), deckBefore.getDeckId()), true);
         return deckBefore.getCardList().get(i);
@@ -74,6 +74,7 @@ public class Player extends Thread {
             }
         }
         int i = rand.nextInt(temp.size());
+        System.out.println("player "+ playerId + " has discarded a " + temp.get(i).getCardNumber());
         cards.remove(temp.get(i));
         appendToOutputFile(String.format("player %d discards a %d to deck %d",playerId, temp.get(i).getCardNumber(), deckAfter.getDeckId()), true);
         return temp.get(i);
@@ -110,11 +111,13 @@ public class Player extends Thread {
             if(!hasDrawnCard) {
                 deckBefore.removeCard(drawCard());
                 hasDrawnCard = true;
+                System.out.println("Deck " + deckBefore.getDeckId() + " has is now of size " + deckBefore.getCardList().size());
             }
 
             if(!hasDiscardedCard) {
                 deckAfter.addCard(discardCard());
                 hasDiscardedCard = true;
+                System.out.println("Deck " + deckAfter.getDeckId() + " has is now of size " + deckAfter.getCardList().size());
             }
 
             if(hasDrawnCard && hasDiscardedCard) {

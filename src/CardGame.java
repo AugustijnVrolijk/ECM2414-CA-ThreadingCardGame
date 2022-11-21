@@ -142,7 +142,7 @@ public class CardGame{
 
     public void setUpTopology(int numPlayers){
         players.get(0).setDeckBefore(decks.get(numPlayers-1));
-        players.get(0).setDeckAfter(decks.get(1));
+        players.get(0).setDeckAfter(decks.get(0));
 
         for (int i = 1; i<numPlayers; i++){
             players.get(i).setDeckBefore(decks.get(i-1));
