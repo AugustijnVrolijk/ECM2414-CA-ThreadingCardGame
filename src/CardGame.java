@@ -11,7 +11,6 @@ public class CardGame{
     private HashMap<Integer, CardDeck> decks = new HashMap<>();
     private ArrayList<Card> cards = new ArrayList<>();
 
-
     public CardGame() throws IOException {
         setUpGame();
     }
@@ -50,7 +49,6 @@ public class CardGame{
         dealCards();
         setUpTopology(numPlayers);
         startPlayers(); //start threads
-
     }
 
     public void startPlayers() {
@@ -111,7 +109,7 @@ public class CardGame{
 
     public void initialisePlayersAndDecks(int numPlayers){
         for (int i = 0; i < numPlayers; i++){
-            int id = players.size() + 1; // don't want an id of 0 as there are no cards with value 0
+            int id = players.size() + 1; // id cannot be 0 as no card has that value
 
             Player player = new Player(id); // thread created
             players.put(id,player);
@@ -145,13 +143,12 @@ public class CardGame{
     }
 
     public void setUpTopology(int numPlayers){
-        players.get(0).setDeckBefore(decks.get(numPlayers-1));
-        players.get(0).setDeckAfter(decks.get(0));
+        players.get(1).setDeckBefore(decks.get(numPlayers));
+        players.get(1).setDeckAfter(decks.get(1));
 
-        for (int i = 1; i<numPlayers; i++){
+        for (int i = 2; i<=numPlayers; i++){
             players.get(i).setDeckBefore(decks.get(i-1));
             players.get(i).setDeckAfter(decks.get(i));
         }
     }
-
 }
