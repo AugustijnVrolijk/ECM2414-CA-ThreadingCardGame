@@ -132,10 +132,11 @@ public class CardGame{
         }
 
         // deals the rest to each deck of cards
-        for (CardDeck deck: decks){
-            try {
+        for (int i = 0; i < 4; i++){
+            for (CardDeck deck: decks){
                 deck.addCard(cards.get(0));
-            } catch (IndexOutOfBoundsException ignored) {}
+                cards.remove(0);
+            }
         }
     }
 
