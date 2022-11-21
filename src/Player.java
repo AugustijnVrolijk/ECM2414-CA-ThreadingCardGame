@@ -93,7 +93,7 @@ public class Player extends Thread {
         while(playing){
             try{
                 deckBefore.removeCard(drawCard(deckBefore.getCardList().get(pickCard()),deckBefore.getDeckId()));
-                deckAfter.addCard(discardCard(cards.get(0), deckAfter.getDeckId()));
+                deckAfter.addCard(discardCard(cards.get(pickDiscardedCard()), deckAfter.getDeckId()));
             } catch (IndexOutOfBoundsException ignored){}
 
             if (checkHand()){
