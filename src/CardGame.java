@@ -16,8 +16,9 @@ public class CardGame{
         setUpGame();
     }
 
-    // constructor for test classes to test individual functions rather than running code
-    public CardGame(String test){}
+    public CardGame(String test){
+        // constructor for test classes to test individual methods rather than running code
+    }
 
     public static void main(String[] args) throws IOException {
         CardGame game = new CardGame();
@@ -32,12 +33,12 @@ public class CardGame{
         System.out.println("Please enter the number of players:");
         try {
             numPlayers = userInput.nextInt();  // Read user input
-        } catch (InputMismatchException e) {
+        } catch (InputMismatchException e) { // exception happens when input is not int
             System.out.println("Invalid input for players");
         }
 
         System.out.println("Please enter location of pack to load:");
-        userInput.nextLine();
+        userInput.nextLine(); // nextInt does not take /n so the next call will consume this and then wait for user input for the pack
         String fileName = userInput.nextLine(); // Read user input
         if(checkPack(numPlayers, fileName)){ // check if pack is valid before reading
             readPack(fileName);
