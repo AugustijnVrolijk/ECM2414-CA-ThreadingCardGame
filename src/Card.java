@@ -4,8 +4,10 @@ public class Card {
     private int cardNumber;
 
     public Card(int cardNumber, int cardId) {
-        this.cardId = cardId;
-        this.cardNumber = cardNumber;
+        synchronized (Card.class){
+            this.cardId = cardId;
+            this.cardNumber = cardNumber;
+        }
     }
 
     public int getCardNumber() {
