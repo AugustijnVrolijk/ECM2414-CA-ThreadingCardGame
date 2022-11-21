@@ -52,7 +52,7 @@ public class CardGame{
 
     }
 
-    public synchronized void startPlayers() {
+    public void startPlayers() {
         for (Player player: players.values()){player.start();}
     }
 
@@ -110,7 +110,7 @@ public class CardGame{
 
     public void initialisePlayersAndDecks(int numPlayers){
         for (int i = 0; i < numPlayers; i++){
-            int id = players.size();
+            int id = players.size() + 1; // don't want an id of 0 as there are no cards with value 0
 
             Player player = new Player(id); // thread created
             players.put(id,player);

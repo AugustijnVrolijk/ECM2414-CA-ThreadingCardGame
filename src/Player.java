@@ -74,11 +74,25 @@ public class Player extends Thread {
         notifyAll();
     }
 
+    private int pickCard(){
+        int index = 0;
+
+        return index;
+    }
+
+
+
+    private int pickDiscardedCard(){
+        int index = 0;
+
+        return index;
+    }
+
 
     public synchronized void run(){
         while(playing){
             try{
-                deckBefore.removeCard(drawCard(deckBefore.getCardList().get(0),deckBefore.getDeckId()));
+                deckBefore.removeCard(drawCard(deckBefore.getCardList().get(pickCard()),deckBefore.getDeckId()));
                 deckAfter.addCard(discardCard(cards.get(0), deckAfter.getDeckId()));
             } catch (IndexOutOfBoundsException ignored){}
 
