@@ -52,7 +52,7 @@ public class Player extends Thread {
         return card;
     }
 
-    public synchronized boolean checkHand() {
+    public boolean checkHand() {
         for (int i = 0; i < cards.size()-1; i++) {
             if (cards.get(i).getCardNumber() != cards.get(i+1).getCardNumber()){
                 return false;
@@ -69,7 +69,7 @@ public class Player extends Thread {
         this.deckAfter = deckAfter;
     }
 
-    public synchronized void stopPlayers(){
+    public void stopPlayers(){
         playing = false;
         notifyAll();
     }
@@ -80,21 +80,21 @@ public class Player extends Thread {
         return index;
     }
 
-
-
     private int pickDiscardedCard(){
         int index = 0;
 
         return index;
     }
 
-
-    public synchronized void run(){
+    public void run(){
         while(playing){
-            try{
-                deckBefore.removeCard(drawCard(deckBefore.getCardList().get(pickCard()),deckBefore.getDeckId()));
-                deckAfter.addCard(discardCard(cards.get(pickDiscardedCard()), deckAfter.getDeckId()));
-            } catch (IndexOutOfBoundsException ignored){}
+            synchronized (this){
+                try{
+                    deckBefore.removeCard(drawCard(deckBefore.getCardList().get(pickCard()),deckBefore.getDeckId()));
+                    deckAfter.addCard(discardCard(cards.get(pickDiscardedCard()), deckAfter.getDeckId()));
+                } catch (IndexOutOfBoundsException ignored){}
+            }
+
 
             if (checkHand()){
                 stopPlayers();
