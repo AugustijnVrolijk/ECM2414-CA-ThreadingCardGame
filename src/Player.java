@@ -48,7 +48,7 @@ public class Player extends Thread {
         return cards;
     }
 
-    public synchronized Card drawCard() {
+    public Card drawCard() {
         for(int i = 0; i < deckBefore.getCardList().size(); i++) {
             if (deckBefore.getCardList().get(i).getCardNumber() == preferredCard) {
                 cards.add(deckBefore.getCardList().get(i));
@@ -63,7 +63,7 @@ public class Player extends Thread {
         return deckBefore.getCardList().get(i);
     }
 
-    public synchronized Card discardCard(Card card) {
+    public Card discardCard(Card card) {
         cards.remove(card);
         appendToOutputFile(String.format("player %d discards a %d to deck %d",playerId, card.getCardNumber(), deckAfter.getDeckId()), true);
         return card;
@@ -134,7 +134,11 @@ public class Player extends Thread {
                 isReady += 1;
 
                 if (isReady < 4) { //number of players
-                    try{wait();}
+                    try {
+                        System.out.println("wait was successfull I think");
+                        System.out.println(playerId);
+                        wait();
+                        System.out.println("wait did not work wtf");}
                     catch (InterruptedException ignored){}
                 } else {
                     notifyAll();
