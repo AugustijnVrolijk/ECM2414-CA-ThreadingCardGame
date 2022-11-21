@@ -48,7 +48,7 @@ public class Player extends Thread {
         return cards;
     }
 
-    public Card drawCard() {
+    public synchronized Card drawCard() {
         for(int i = 0; i < deckBefore.getCardList().size(); i++) {
             if (deckBefore.getCardList().get(i).getCardNumber() == preferredCard) {
                 System.out.println("card drawn");
@@ -64,7 +64,7 @@ public class Player extends Thread {
         return deckBefore.getCardList().get(i);
     }
 
-    public Card discardCard(Card card) {
+    public synchronized Card discardCard(Card card) {
         cards.remove(card);
         appendToOutputFile(String.format("player %d discards a %d to deck %d",playerId, card.getCardNumber(), deckAfter.getDeckId()), true);
         return card;
@@ -113,10 +113,7 @@ public class Player extends Thread {
 
             if(!hasDrawnCard) {
                 synchronized (deckBefore) {
-                    try {
-                        deckBefore.removeCard(drawCard());
-                    } catch (IndexOutOfBoundsException ignored) {
-                    }
+                    deckBefore.removeCard(drawCard());
                     hasDrawnCard = true;
                 }
             }
