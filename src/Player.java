@@ -1,12 +1,18 @@
 import java.util.ArrayList;
 import java.io.*;
+import java.util.Random;
+
 public class Player extends Thread {
     private int playerId;
     private ArrayList<Card> cards = new ArrayList<>();
     private File outputFile;
     private CardDeck deckBefore;
+    //take cards from
     private CardDeck deckAfter;
+    //remove cards to
+    private int preferredCard = playerId;
     private static boolean playing = true;
+    Random rand = new Random();
 
     Player(int playerId) {
         this.playerId = playerId;
@@ -39,15 +45,15 @@ public class Player extends Thread {
         return cards;
     }
 
-    public synchronized Card drawCard(Card card, int deckId){
+    public synchronized Card drawCard(Card card) {
         cards.add(card);
-        appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, card.getCardNumber(), deckId), true);
+        appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, card.getCardNumber(), deckBefore.getDeckId()), true);
         return card;
     }
 
-    public synchronized Card discardCard(Card card, int deckId) {
+    public synchronized Card discardCard(Card card) {
         cards.remove(card);
-        appendToOutputFile(String.format("player %d discards a %d to deck %d",playerId, card.getCardNumber(), deckId), true);
+        appendToOutputFile(String.format("player %d discards a %d to deck %d",playerId, card.getCardNumber(), deckAfter.getDeckId()), true);
         return card;
     }
 
@@ -74,15 +80,24 @@ public class Player extends Thread {
     }
 
     private int pickCard(){
-        int index = 0;
-
-        return index;
+        for(int i = 0; i < deckBefore.getCardList().size(); i++) {
+            if (deckBefore.getCardList().get(i).getCardNumber() == preferredCard) {
+                return i;
+            }
+        }
+        return rand.nextInt(deckBefore.getCardList().size()-1);
     }
 
-    private int pickDiscardedCard(){
+    private int pickDiscardedCard() { //throws Exception
         int index = 0;
-
-        return index;
+        ArrayList<Integer> temp = new ArrayList<>();
+        for(int i = 0; i < cards.size(); i++) {
+            if (cards.get(i).getCardNumber() != preferredCard) {
+                temp.add(i);
+            }
+        }
+        return temp.get(rand.nextInt(temp.size())-1);
+        //throw new Exception("Exception message");
     }
 
     public void run(){
@@ -94,8 +109,8 @@ public class Player extends Thread {
             }
             synchronized (this){
                 try{
-                    deckBefore.removeCard(drawCard(deckBefore.getCardList().get(pickCard()),deckBefore.getDeckId()));
-                    deckAfter.addCard(discardCard(cards.get(pickDiscardedCard()), deckAfter.getDeckId()));
+                    deckBefore.removeCard(drawCard(deckBefore.getCardList().get(pickCard())));
+                    deckAfter.addCard(discardCard(cards.get(pickDiscardedCard())));
                 } catch (IndexOutOfBoundsException ignored){}
             }
 
