@@ -53,6 +53,7 @@ public class Player extends Thread {
                 return deckBefore.getCardList().get(i);
             }
         }
+        System.out.println(deckBefore.getCardList().size());
         int i = rand.nextInt(deckBefore.getCardList().size());
         cards.add(deckBefore.getCardList().get(i));
         appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, deckBefore.getCardList().get(i).getCardNumber(), deckBefore.getDeckId()), true);
