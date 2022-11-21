@@ -10,7 +10,6 @@ public class CardDeck {
     CardDeck(int deckId){
         this.deckId = deckId;
         String basePath = new File("").getAbsolutePath();
-        boolean temp = new File("outputTextFiles").mkdir();
         outputFile = new File(String.format("%s/outputTextFiles/deck%d_output.txt",basePath, this.deckId));
     }
 

@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class CardGame{
@@ -23,7 +20,6 @@ public class CardGame{
     }
 
     public void setUpGame() throws IOException {
-
         // get num of players and pack file name from user
         Scanner userInput = new Scanner(System.in);  // Create a Scanner object
         int numPlayers = 0;
@@ -107,6 +103,7 @@ public class CardGame{
     }
 
     public void initialisePlayersAndDecks(int numPlayers){
+        boolean temp = new File("outputTextFiles").mkdir();
         for (int i = 0; i < numPlayers; i++){
             int id = players.size() + 1; // id cannot be 0 as no card has that value
 

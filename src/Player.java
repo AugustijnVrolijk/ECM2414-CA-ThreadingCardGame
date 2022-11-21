@@ -11,7 +11,6 @@ public class Player extends Thread {
     Player(int playerId) {
         this.playerId = playerId;
         String basePath = (new File("")).getAbsolutePath();
-        boolean dir = (new File("outputTextFiles")).mkdir();
         outputFile = new File(String.format("%s/outputTextFiles/player%d_output.txt", basePath, playerId));
         appendToOutputFile(String.format("Player %d enters the game", playerId), false);
     }
