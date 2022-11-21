@@ -6,9 +6,8 @@ import java.util.*;
 
 public class CardGame{
 
-    // have added a hash map to access decks and players easily by id
-    private HashMap<Integer, Player> players = new HashMap<>();
-    private HashMap<Integer, CardDeck> decks = new HashMap<>();
+    private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<CardDeck> decks = new ArrayList<>();
     private ArrayList<Card> cards = new ArrayList<>();
 
     public CardGame() throws IOException {
@@ -52,7 +51,7 @@ public class CardGame{
     }
 
     public void startPlayers() {
-        for (Player player: players.values()){player.start();}
+        for (Player player: players){player.start();}
     }
 
 
@@ -112,10 +111,10 @@ public class CardGame{
             int id = players.size() + 1; // id cannot be 0 as no card has that value
 
             Player player = new Player(id); // thread created
-            players.put(id,player);
+            players.add(player);
 
             CardDeck deck = new CardDeck(id);
-            decks.put(id, deck);
+            decks.add(deck);
         }
     }
 
@@ -123,30 +122,42 @@ public class CardGame{
         // deals 4 cards to each player
         Collections.shuffle(cards);
         for (int i = 0; i < 4; i++){
-            for (Player player : players.values()){
+            for (Player player : players){
                 player.addCard(cards.get(0));
                 cards.remove(0);
             }
         }
 
         // adds initial hand to output file of each player
-        for (Player player: players.values()){
+        for (Player player: players){
             player.appendInitialHand();
         }
 
         // deals the rest to each deck of cards
-        for (CardDeck deck: decks.values()){
+        for (CardDeck deck: decks){
             try {
                 deck.addCard(cards.get(0));
             } catch (IndexOutOfBoundsException ignored) {}
         }
     }
 
+    /*
     public void setUpTopology(int numPlayers){
         players.get(1).setDeckBefore(decks.get(numPlayers));
         players.get(1).setDeckAfter(decks.get(1));
 
         for (int i = 2; i<=numPlayers; i++){
+            players.get(i).setDeckBefore(decks.get(i-1));
+            players.get(i).setDeckAfter(decks.get(i));
+        }
+    }
+    */
+
+    public void setUpTopology(int numPlayers){
+        players.get(0).setDeckBefore(decks.get(numPlayers-1));
+        players.get(0).setDeckAfter(decks.get(1));
+
+        for (int i = 1; i<numPlayers; i++){
             players.get(i).setDeckBefore(decks.get(i-1));
             players.get(i).setDeckAfter(decks.get(i));
         }
