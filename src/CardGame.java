@@ -103,6 +103,7 @@ public class CardGame{
     }
 
     public void initialisePlayersAndDecks(int numPlayers){
+        // creates directory for players and decks output files
         boolean temp = new File("outputTextFiles").mkdir();
         for (int i = 0; i < numPlayers; i++){
             int id = players.size() + 1; // id cannot be 0 as no card has that value

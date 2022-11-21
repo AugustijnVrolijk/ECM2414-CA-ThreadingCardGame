@@ -87,6 +87,10 @@ public class Player extends Thread {
 
     public void run(){
         while(playing){
+            if (checkHand()){
+                stopPlayers();
+
+            }
             synchronized (this){
                 try{
                     deckBefore.removeCard(drawCard(deckBefore.getCardList().get(pickCard()),deckBefore.getDeckId()));
@@ -95,11 +99,6 @@ public class Player extends Thread {
             }
 
 
-            if (checkHand()){
-                stopPlayers();
-                // add correct output to string to player
-                // output deck files
-            }
         }
     }
 }
