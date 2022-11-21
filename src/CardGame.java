@@ -4,8 +4,8 @@ import java.util.*;
 public class CardGame{
 
     public ArrayList<Player> players = new ArrayList<>();
-    private ArrayList<CardDeck> decks = new ArrayList<>();
-    private ArrayList<Card> cards = new ArrayList<>();
+    public ArrayList<CardDeck> decks = new ArrayList<>();
+    public ArrayList<Card> cards = new ArrayList<>();
 
     public CardGame() throws IOException {
         setUpGame();
