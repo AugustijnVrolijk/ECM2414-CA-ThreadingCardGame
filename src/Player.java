@@ -89,6 +89,7 @@ public class Player extends Thread {
         while(playing){
             if (checkHand()){
                 stopPlayers();
+                deckAfter.recordFinalHand();
 
             }
             synchronized (this){
