@@ -10,15 +10,17 @@ public class Player extends Thread {
     //take cards from
     private CardDeck deckAfter;
     //remove cards to
-    private int preferredCard = playerId;
+    private int preferredCard;
     private static boolean playing = true;
     Random rand = new Random();
-    private boolean hasDrawnCard = true;
-    private boolean hasDiscardedCard = true;
+    private boolean hasDrawnCard = false;
+    private boolean hasDiscardedCard = false;
     private static int isReady = 0;
+    static Object lock = new Object();
 
     Player(int playerId) {
         this.playerId = playerId;
+        this.preferredCard = playerId;
         String basePath = (new File("")).getAbsolutePath();
         outputFile = new File(String.format("%s/outputTextFiles/player%d_output.txt", basePath, playerId));
         appendToOutputFile(String.format("Player %d enters the game", playerId), false);
@@ -51,23 +53,30 @@ public class Player extends Thread {
     public synchronized Card drawCard() {
         for(int i = 0; i < deckBefore.getCardList().size(); i++) {
             if (deckBefore.getCardList().get(i).getCardNumber() == preferredCard) {
-                System.out.println("card drawn");
+                System.out.println("player "+ playerId + "has drawn a ");
                 cards.add(deckBefore.getCardList().get(i));
                 appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, deckBefore.getCardList().get(i).getCardNumber(), deckBefore.getDeckId()), true);
                 return deckBefore.getCardList().get(i);
             }
         }
-        System.out.println(deckBefore.getCardList().size());
+        System.out.println("card drawn for " + playerId);
         int i = rand.nextInt(deckBefore.getCardList().size());
         cards.add(deckBefore.getCardList().get(i));
         appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, deckBefore.getCardList().get(i).getCardNumber(), deckBefore.getDeckId()), true);
         return deckBefore.getCardList().get(i);
     }
 
-    public synchronized Card discardCard(Card card) {
-        cards.remove(card);
-        appendToOutputFile(String.format("player %d discards a %d to deck %d",playerId, card.getCardNumber(), deckAfter.getDeckId()), true);
-        return card;
+    public synchronized Card discardCard() {
+        ArrayList<Card> temp = new ArrayList<>();
+        for(int i = 0; i < cards.size(); i++) {
+            if (cards.get(i).getCardNumber() != preferredCard) {
+                temp.add(cards.get(i));
+            }
+        }
+        int i = rand.nextInt(temp.size());
+        cards.remove(temp.get(i));
+        appendToOutputFile(String.format("player %d discards a %d to deck %d",playerId, temp.get(i).getCardNumber(), deckAfter.getDeckId()), true);
+        return temp.get(i);
     }
 
     public boolean checkHand() {
@@ -91,19 +100,6 @@ public class Player extends Thread {
         playing = false;
         notifyAll();
     }
-
-    private int pickDiscardedCard() { //throws Exception
-        int index = 0;
-        ArrayList<Integer> temp = new ArrayList<>();
-        for(int i = 0; i < cards.size(); i++) {
-            if (cards.get(i).getCardNumber() != preferredCard) {
-                temp.add(i);
-            }
-        }
-        return temp.get(rand.nextInt(temp.size()));
-        //throw new Exception("Exception message");
-    }
-
     public synchronized void run() {
         while(playing){
             if (checkHand()){
@@ -112,35 +108,34 @@ public class Player extends Thread {
             }
 
             if(!hasDrawnCard) {
-                synchronized (deckBefore) {
-                    deckBefore.removeCard(drawCard());
-                    hasDrawnCard = true;
-                }
+                deckBefore.removeCard(drawCard());
+                hasDrawnCard = true;
             }
+
             if(!hasDiscardedCard) {
-                synchronized (deckAfter) {
-                    try {
-                        deckAfter.addCard(discardCard(cards.get(pickDiscardedCard())));
-                    } catch (IndexOutOfBoundsException ignored) {
-                    }
-                    hasDiscardedCard = true;
-                }
+                deckAfter.addCard(discardCard());
+                hasDiscardedCard = true;
             }
+
             if(hasDrawnCard && hasDiscardedCard) {
                 hasDiscardedCard = false;
                 hasDrawnCard = false;
                 isReady += 1;
 
-                if (isReady < 4) { //number of players
-                    try {
-                        System.out.println("wait was successfull I think");
-                        System.out.println(playerId);
-                        wait();
-                        System.out.println("wait did not work wtf");}
-                    catch (InterruptedException ignored){}
-                } else {
-                    notifyAll();
+                synchronized (lock) {
+                    if (isReady < 4) { //number of players
+                        try {
+                            System.out.println("player " + playerId + " has gotten to the wait clause, number of threads which have said isReady is : " + isReady);
+                            lock.wait();
+                            System.out.println("");}
+                        catch (InterruptedException ignored){}
+                    } else {
+                        System.out.println("player " + playerId + " has gotten to the else clause, isReady is currently equal to " + isReady);
+                        lock.notifyAll();
+                        isReady = 0;
+                    }
                 }
+
             }
         }
     }
