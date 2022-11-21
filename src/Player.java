@@ -77,8 +77,11 @@ public class Player extends Thread {
 
     public synchronized void run(){
         while(playing){
-            deckBefore.removeCard(drawCard(deckBefore.getCardList().get(0),deckBefore.getDeckId()));
-            deckAfter.addCard(discardCard(cards.get(0), deckAfter.getDeckId()));
+            try{
+                deckBefore.removeCard(drawCard(deckBefore.getCardList().get(0),deckBefore.getDeckId()));
+                deckAfter.addCard(discardCard(cards.get(0), deckAfter.getDeckId()));
+            } catch (IndexOutOfBoundsException ignored){}
+
             if (checkHand()){
                 stopPlayers();
             }
