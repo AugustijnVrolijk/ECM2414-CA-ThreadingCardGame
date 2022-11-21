@@ -24,7 +24,7 @@ public class CardDeck {
     public synchronized ArrayList<Card> getCardList() {
         return cardList;
     }
-    public synchronized int getDeckId() {
+    public int getDeckId() {
         return deckId;
     }
 
