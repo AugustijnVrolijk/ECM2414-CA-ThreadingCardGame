@@ -103,7 +103,7 @@ public class Player extends Thread {
         //throw new Exception("Exception message");
     }
 
-    public void run() {
+    public synchronized void run() {
         while(playing){
             if (checkHand()){
                 stopPlayers();
