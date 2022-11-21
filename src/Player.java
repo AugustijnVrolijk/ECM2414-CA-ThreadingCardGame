@@ -45,10 +45,18 @@ public class Player extends Thread {
         return cards;
     }
 
-    public synchronized Card drawCard(Card card) {
-        cards.add(card);
-        appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, card.getCardNumber(), deckBefore.getDeckId()), true);
-        return card;
+    public synchronized Card drawCard() {
+        for(int i = 0; i < deckBefore.getCardList().size(); i++) {
+            if (deckBefore.getCardList().get(i).getCardNumber() == preferredCard) {
+                cards.add(deckBefore.getCardList().get(i));
+                appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, deckBefore.getCardList().get(i).getCardNumber(), deckBefore.getDeckId()), true);
+                return deckBefore.getCardList().get(i);
+            }
+        }
+        int i = rand.nextInt(deckBefore.getCardList().size());
+        cards.add(deckBefore.getCardList().get(i));
+        appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, deckBefore.getCardList().get(i).getCardNumber(), deckBefore.getDeckId()), true);
+        return deckBefore.getCardList().get(i);
     }
 
     public synchronized Card discardCard(Card card) {
@@ -79,15 +87,6 @@ public class Player extends Thread {
         notifyAll();
     }
 
-    private int pickCard(){
-        for(int i = 0; i < deckBefore.getCardList().size(); i++) {
-            if (deckBefore.getCardList().get(i).getCardNumber() == preferredCard) {
-                return i;
-            }
-        }
-        return rand.nextInt(deckBefore.getCardList().size()-1);
-    }
-
     private int pickDiscardedCard() { //throws Exception
         int index = 0;
         ArrayList<Integer> temp = new ArrayList<>();
@@ -96,7 +95,7 @@ public class Player extends Thread {
                 temp.add(i);
             }
         }
-        return temp.get(rand.nextInt(temp.size())-1);
+        return temp.get(rand.nextInt(temp.size()));
         //throw new Exception("Exception message");
     }
 
@@ -109,7 +108,7 @@ public class Player extends Thread {
             }
             synchronized (this){
                 try{
-                    deckBefore.removeCard(drawCard(deckBefore.getCardList().get(pickCard())));
+                    deckBefore.removeCard(drawCard());
                     deckAfter.addCard(discardCard(cards.get(pickDiscardedCard())));
                 } catch (IndexOutOfBoundsException ignored){}
             }
