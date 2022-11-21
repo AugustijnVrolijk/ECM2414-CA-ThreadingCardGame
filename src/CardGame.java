@@ -141,18 +141,6 @@ public class CardGame{
         }
     }
 
-    /*
-    public void setUpTopology(int numPlayers){
-        players.get(1).setDeckBefore(decks.get(numPlayers));
-        players.get(1).setDeckAfter(decks.get(1));
-
-        for (int i = 2; i<=numPlayers; i++){
-            players.get(i).setDeckBefore(decks.get(i-1));
-            players.get(i).setDeckAfter(decks.get(i));
-        }
-    }
-    */
-
     public void setUpTopology(int numPlayers){
         players.get(0).setDeckBefore(decks.get(numPlayers-1));
         players.get(0).setDeckAfter(decks.get(1));
