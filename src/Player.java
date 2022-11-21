@@ -51,6 +51,7 @@ public class Player extends Thread {
     public Card drawCard() {
         for(int i = 0; i < deckBefore.getCardList().size(); i++) {
             if (deckBefore.getCardList().get(i).getCardNumber() == preferredCard) {
+                System.out.println("card drawn");
                 cards.add(deckBefore.getCardList().get(i));
                 appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, deckBefore.getCardList().get(i).getCardNumber(), deckBefore.getDeckId()), true);
                 return deckBefore.getCardList().get(i);
