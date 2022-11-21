@@ -98,10 +98,9 @@ public class Player extends Thread {
 
             if (checkHand()){
                 stopPlayers();
+                // add correct output to string to player
+                // output deck files
             }
-            // add correct output to string to player
         }
-
-
     }
 }
