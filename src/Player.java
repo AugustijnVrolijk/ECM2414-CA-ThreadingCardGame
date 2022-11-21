@@ -13,6 +13,9 @@ public class Player extends Thread {
     private int preferredCard = playerId;
     private static boolean playing = true;
     Random rand = new Random();
+    private boolean hasDrawnCard = true;
+    private boolean hasDiscardedCard = true;
+    private static int isReady = 0;
 
     Player(int playerId) {
         this.playerId = playerId;
@@ -100,21 +103,43 @@ public class Player extends Thread {
         //throw new Exception("Exception message");
     }
 
-    public void run(){
+    public void run() {
         while(playing){
             if (checkHand()){
                 stopPlayers();
                 deckAfter.recordFinalHand();
-
-            }
-            synchronized (this){
-                try{
-                    deckBefore.removeCard(drawCard());
-                    deckAfter.addCard(discardCard(cards.get(pickDiscardedCard())));
-                } catch (IndexOutOfBoundsException ignored){}
             }
 
+            if(!hasDrawnCard) {
+                synchronized (deckBefore) {
+                    try {
+                        deckBefore.removeCard(drawCard());
+                    } catch (IndexOutOfBoundsException ignored) {
+                    }
+                    hasDrawnCard = true;
+                }
+            }
+            if(!hasDiscardedCard) {
+                synchronized (deckAfter) {
+                    try {
+                        deckAfter.addCard(discardCard(cards.get(pickDiscardedCard())));
+                    } catch (IndexOutOfBoundsException ignored) {
+                    }
+                    hasDiscardedCard = true;
+                }
+            }
+            if(hasDrawnCard && hasDiscardedCard) {
+                hasDiscardedCard = false;
+                hasDrawnCard = false;
+                isReady += 1;
 
+                if (isReady < 4) { //number of players
+                    try{wait();}
+                    catch (InterruptedException ignored){}
+                } else {
+                    notifyAll();
+                }
+            }
         }
     }
 }

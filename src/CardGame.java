@@ -3,7 +3,7 @@ import java.util.*;
 
 public class CardGame{
 
-    private ArrayList<Player> players = new ArrayList<>();
+    public ArrayList<Player> players = new ArrayList<>();
     private ArrayList<CardDeck> decks = new ArrayList<>();
     private ArrayList<Card> cards = new ArrayList<>();
 
