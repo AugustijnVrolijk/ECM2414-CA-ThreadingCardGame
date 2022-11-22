@@ -54,5 +54,12 @@ public class TestCardGame {
         }
     }
 
+    @Test
+    public void testThreads() throws InterruptedException {
+        game.startPlayers();
+        game.players.get(0).join();
+        // todos
+    }
+
 
 }
