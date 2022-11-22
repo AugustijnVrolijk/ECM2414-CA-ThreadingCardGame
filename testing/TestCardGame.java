@@ -17,10 +17,25 @@ public class TestCardGame {
     }
 
     @Test
-    public void checkCardsDealt() throws IOException {
+    public void testReadPack() throws IOException {
+        game.readPack("pack.txt");
+    }
+
+    @Before
+    public void setUp2() throws IOException {
         game.readPack("pack.txt");
         game.initialisePlayersAndDecks(4);
         game.dealCards();
+    }
+
+    @Test
+    public void testInitialisePlayersAndDecks(){
+        assert (game.players.size()==4);
+        assert (game.decks.size() == 4);
+    }
+
+    @Test
+    public void testDealCards() {
 
         for (Player player: game.players){
             assert (player.getCards().size() == 4);
@@ -30,5 +45,4 @@ public class TestCardGame {
             assert (deck.getCardList().size() == 4);
         }
     }
-
 }
