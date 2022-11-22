@@ -10,7 +10,7 @@ public class CardDeck {
     CardDeck(int deckId){
         this.deckId = deckId;
         String basePath = new File("").getAbsolutePath();
-        outputFile = new File(String.format("%s/outputTextFiles/deck%d_output.txt",basePath, this.deckId));
+        outputFile = new File(String.format("%s/outputTextFiles/deck%d_output.txt",basePath, this.deckId)); //create output file for this deck
     }
 
     public synchronized void addCard(Card card) {
@@ -32,7 +32,7 @@ public class CardDeck {
         try (FileWriter f = new FileWriter(outputFile, false);
              BufferedWriter b = new BufferedWriter(f);
              PrintWriter p = new PrintWriter(b)) {
-            p.println(String.format("Deck %d contents: %s",deckId,cardList.toString()));}
+            p.println(String.format("Deck %d contents: %s",deckId,cardList.toString()));} //write final cards in deck to output file
         catch (IOException i) { i.printStackTrace(); }
     }
 }

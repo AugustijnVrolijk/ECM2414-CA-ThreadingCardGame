@@ -58,9 +58,10 @@ public class CardGame{
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
-            String line = br.readLine();
+            String line;
+            //System.out.println(line + "this is line ");
 
-            while ((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) { //while each line contains something
                 lineNum++; // count lines
                 try {
                     cardNum = Integer.parseInt(line);
@@ -75,10 +76,10 @@ public class CardGame{
                 }
             }
 
-            if (lineNum < (8 * numPlayers)){
+            if (lineNum != (8 * numPlayers)){
                 // checks that there are enough cards in the pack
                 valid = false;
-                System.out.println("Pack does not contain enough cards");
+                System.out.println("Pack does not contain the right amount of cards");
             }
 
         } catch (FileNotFoundException e) {
@@ -91,7 +92,7 @@ public class CardGame{
     public void readPack(String fileName) throws IOException {
 
         BufferedReader br = new BufferedReader(new FileReader(fileName));
-        String line = br.readLine();
+        String line;
 
         while ((line = br.readLine()) != null) {
             int cardNum = Integer.parseInt(line); // get card num from file
