@@ -58,14 +58,12 @@ public class Player extends Thread {
     public synchronized Card drawCard() {
         for(int i = 0; i < deckBefore.getCardList().size(); i++) {
             if (deckBefore.getCardList().get(i).getCardNumber() == preferredCard) {
-                System.out.println("player "+ playerId + " has drawn a " + deckBefore.getCardList().get(i).getCardNumber());
                 cards.add(deckBefore.getCardList().get(i));
                 appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, deckBefore.getCardList().get(i).getCardNumber(), deckBefore.getDeckId()), true);
                 return deckBefore.getCardList().get(i);
             }
         }
         int i = rand.nextInt(deckBefore.getCardList().size());
-        System.out.println("player "+ playerId + " has drawn a " + deckBefore.getCardList().get(i).getCardNumber());
         cards.add(deckBefore.getCardList().get(i));
         appendToOutputFile(String.format("player %d draws a %d from deck %d",playerId, deckBefore.getCardList().get(i).getCardNumber(), deckBefore.getDeckId()), true);
         return deckBefore.getCardList().get(i);
@@ -79,7 +77,6 @@ public class Player extends Thread {
             }
         }
         int i = rand.nextInt(temp.size());
-        System.out.println("player "+ playerId + " has discarded a " + temp.get(i).getCardNumber());
         cards.remove(temp.get(i));
         appendToOutputFile(String.format("player %d discards a %d to deck %d",playerId, temp.get(i).getCardNumber(), deckAfter.getDeckId()), true);
         return temp.get(i);
@@ -120,15 +117,10 @@ public class Player extends Thread {
         while(playing){
             synchronized (lock) {
                 if (checkHand()){
-                    System.out.println("The game has apparently been won by player " + playerId);
+                    System.out.println(String.format("Player %d wins", playerId));
                     stopPlayers();
                     appendToOutputFile(String.format("player %d exits",this.playerId), true);
-                    appendToOutputFile(String.format("Player %d final hand: %d %d %d %d",
-                            playerId,
-                            cards.get(0).getCardNumber(),
-                            cards.get(1).getCardNumber(),
-                            cards.get(2).getCardNumber(),
-                            cards.get(3).getCardNumber()), true);
+                    appendToOutputFile(String.format("Player %d final hand: %s", playerId, cards.toString()), true);
                     deckAfter.recordFinalHand();
                     stop();
                 }
@@ -137,20 +129,14 @@ public class Player extends Thread {
                     deckBefore.removeCard(drawCard());
                     deckAfter.addCard(discardCard());
                     hasPlayed = true;
-                    System.out.println("Deck " + deckBefore.getDeckId() + " has is now of size " + deckBefore.getCardList().size());
-                    System.out.println("Deck " + deckAfter.getDeckId() + " has is now of size " + deckAfter.getCardList().size());
                 }
                 if(hasPlayed) {
                     incrementIsReady();
                     hasPlayed = false;
                     if (isReady < numberOfPlayers) { //number of players
-                        try {
-                            System.out.println("player " + playerId + " has gotten to the wait clause, number of threads which have said isReady is : " + isReady);
-                            lock.wait();
-                            System.out.println("");}
+                        try {lock.wait();}
                         catch (InterruptedException ignored){System.out.println("Interrupted Exception caught");}
                     } else {
-                        System.out.println("player " + playerId + " has gotten to the else clause, isReady is currently equal to " + isReady);
                         lock.notifyAll();
                         resetIsReady();
                     }
@@ -160,12 +146,7 @@ public class Player extends Thread {
         }
         appendToOutputFile(String.format("player %d has informed player %d that player %d has won",winningThread, this.playerId, winningThread), true);
         appendToOutputFile(String.format("player %d exits",this.playerId), true);
-        appendToOutputFile(String.format("Player %d final hand: %d %d %d %d",
-                playerId,
-                cards.get(0).getCardNumber(),
-                cards.get(1).getCardNumber(),
-                cards.get(2).getCardNumber(),
-                cards.get(3).getCardNumber()), true);
+        appendToOutputFile(String.format("Player %d final hand: %s", playerId, cards.toString()), true);
         deckAfter.recordFinalHand();
         stop();
     }

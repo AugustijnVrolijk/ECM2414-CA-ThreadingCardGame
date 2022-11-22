@@ -9,11 +9,11 @@ public class Card {
             this.cardNumber = cardNumber;
         }
     }
-
     public int getCardNumber() {
         return cardNumber;
     }
-    public int getCardId() {
-        return cardId;
+    @Override
+    public String toString() {
+        return String.valueOf(cardNumber);
     }
 }
