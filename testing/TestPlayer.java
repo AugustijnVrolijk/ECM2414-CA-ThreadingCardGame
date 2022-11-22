@@ -50,27 +50,34 @@ public class TestPlayer {
     }
 
     @Test
-    public void testAppendInitialHand() throws IOException {
-        player1.appendInitialHand();
-        assert(Objects.equals(CheckOutputFile(String.format("%s/outputTextFiles/player1_output.txt", basePath),1), "player 1 initial hand []"));
+    public void testInitialPlayerSetup() throws IOException {
+        assert(Objects.equals(CheckOutputFile(String.format("%s/outputTextFiles/player1_output.txt", basePath),0), "Player 1 enters the game"));
+        assert(Objects.equals(CheckOutputFile(String.format("%s/outputTextFiles/player2_output.txt", basePath),0), "Player 2 enters the game"));
     }
-    @Test
-    public void testAppendToOutputFile() {
-        // TODO
-    }
-
     @Test
     public void testDrawCard() {
-        // player.addCard(card);
-        // assert (player.getCards().size()==1);
+        player2.addCard(card4);
+        player2.addCard(card5);
+        player2.addCard(card6);
+        player2.addCard(card7);
+        assert (player2.getCards().size()==4);
     }
-
+    @Test
+    public void testAppendInitialHand() throws IOException {
+        player1.appendInitialHand();
+        player2.appendInitialHand();
+        assert(Objects.equals(CheckOutputFile(String.format("%s/outputTextFiles/player1_output.txt", basePath),1), "player 1 initial hand []"));
+        System.out.println(CheckOutputFile(String.format("%s/outputTextFiles/player2_output.txt", basePath),1));
+        assert(Objects.equals(CheckOutputFile(String.format("%s/outputTextFiles/player2_output.txt", basePath),1), "player 2 initial hand [2,3,4,5]"));
+    }
     @Test
     public void testDiscardCard() {
         player1.discardCard();
         assert (player1.getCards().size()==0);
     }
-
+    @Test
+    public void testAppendToOutputFile() {
+    }
     @Test
     public void testCheckHand() {
         player1.addCard(card0);
