@@ -11,7 +11,8 @@ public class TestPlayer {
 
     private Player player1;
     private Player player2;
-    private CardDeck deck1;
+    private CardDeck deckBefore;
+    private CardDeck deckAfter;
     private Card card0;
     private Card card1;
     private Card card2;
@@ -26,7 +27,8 @@ public class TestPlayer {
     public void setUp() {
         player1 = new Player(1);
         player2 = new Player(2);
-        deck1 = new CardDeck(0);
+        deckBefore = new CardDeck(0);
+        deckAfter = new CardDeck(1);
         card0 = new Card(1);
         card1 = new Card(1);
         card2 = new Card(1);
@@ -40,6 +42,10 @@ public class TestPlayer {
         player2.addCard(card5);
         player2.addCard(card6);
         player2.addCard(card7);
+        player1.setDeckAfter(deckAfter);
+        player2.setDeckAfter(deckAfter);
+        player1.setDeckBefore(deckBefore);
+        player2.setDeckBefore(deckBefore);
     }
 
 
@@ -60,7 +66,17 @@ public class TestPlayer {
     }
     @Test
     public void testDrawCard() {
-        assert (player2.getCards().size()==4);
+        deckBefore.addCard(card0);
+        deckBefore.addCard(card1);
+        deckBefore.addCard(card2);
+        deckBefore.addCard(card3);
+        deckBefore.addCard(card4);
+        player1.drawCard();
+        player1.drawCard();
+        player1.drawCard();
+        player1.drawCard();
+        assert (player1.getCards().size()==4);
+        assert (player1.checkHand());
     }
     @Test
     public void testAppendInitialHand() throws IOException {
@@ -71,11 +87,19 @@ public class TestPlayer {
     }
     @Test
     public void testDiscardCard() {
+        player1.addCard(card0);
+        player1.addCard(card2);
+        player1.addCard(card3);
+        player1.addCard(card4);
         player2.discardCard();
-        assert (player1.getCards().size()==0);
+        assert (player2.getCards().size()==3);
+        assert (player1.discardCard()==card4);
     }
     @Test
-    public void testAppendToOutputFile() {
+    public void testAppendToOutputFile() throws IOException {
+        deckBefore.addCard(card0);
+        player1.drawCard();
+        assert(Objects.equals(CheckOutputFile(String.format("%s/outputTextFiles/player1_output.txt", basePath),1), "player 1 draws a 1 from deck 0"));
     }
     @Test
     public void testCheckHand() {
@@ -83,6 +107,7 @@ public class TestPlayer {
         player1.addCard(card1);
         player1.addCard(card2);
         player1.addCard(card3);
-        assert player1.checkHand();
+        assert(player1.checkHand());
+        assert(!player2.checkHand());
     }
 }
