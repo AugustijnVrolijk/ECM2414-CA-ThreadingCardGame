@@ -35,6 +35,14 @@ public class Player extends Thread {
         appendToOutputFile(String.format("player %d initial hand %s",playerId, cards.toString()), true);
     }
 
+    public int getPlayerId() {
+        return playerId;
+    }
+
+    public CardDeck getDeckAfter() {
+        return deckAfter;
+    }
+
     private void appendToOutputFile(String text, boolean append) {
         try (FileWriter f = new FileWriter(outputFile, append);
              BufferedWriter b = new BufferedWriter(f);
@@ -113,7 +121,7 @@ public class Player extends Thread {
         while(playing){
             synchronized (lock) {
                 if (checkHand()){
-                    System.out.println(String.format("Player %d wins", playerId));
+                    System.out.printf("Player %d wins%n", playerId);
                     stopPlayers();
                     appendToOutputFile(String.format("player %d exits", playerId), true);
                     appendToOutputFile(String.format("Player %d final hand: %s", playerId, cards.toString()), true);
