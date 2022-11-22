@@ -25,18 +25,18 @@ public class CardGame{
         System.out.println("Please enter the number of players:");
         boolean invalidInput = true;
 
-        while(invalidInput) {
+        while(invalidInput) { //keep trying until valid input has been entered
             try {
                 numPlayers = userInput.nextInt();// Read user input
                 invalidInput = false;
             } catch (InputMismatchException e) { // exception happens when input is not int
                 System.out.println("Invalid input for players");
-                userInput.nextLine();
+                userInput.nextLine();      //eat "invalid input for players" as input so try loop does not think this is the input for numPlayers
             }
         }
 
         invalidInput = true;
-        userInput.nextLine();
+        userInput.nextLine();   //eat whitespace characters so no weird formatting when in between asking for number of players and pack
         while(invalidInput) {
             System.out.println("Please enter location of pack to load:");
             String fileName = userInput.nextLine(); // Read user input
