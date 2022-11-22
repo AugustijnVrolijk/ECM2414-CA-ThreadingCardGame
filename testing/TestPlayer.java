@@ -36,6 +36,10 @@ public class TestPlayer {
         card6 = new Card(4);
         card7 = new Card(5);
         Player.setNumberOfPlayers(2);
+        player2.addCard(card4);
+        player2.addCard(card5);
+        player2.addCard(card6);
+        player2.addCard(card7);
     }
 
 
@@ -56,10 +60,6 @@ public class TestPlayer {
     }
     @Test
     public void testDrawCard() {
-        player2.addCard(card4);
-        player2.addCard(card5);
-        player2.addCard(card6);
-        player2.addCard(card7);
         assert (player2.getCards().size()==4);
     }
     @Test
@@ -67,12 +67,11 @@ public class TestPlayer {
         player1.appendInitialHand();
         player2.appendInitialHand();
         assert(Objects.equals(CheckOutputFile(String.format("%s/outputTextFiles/player1_output.txt", basePath),1), "player 1 initial hand []"));
-        System.out.println(CheckOutputFile(String.format("%s/outputTextFiles/player2_output.txt", basePath),1));
-        assert(Objects.equals(CheckOutputFile(String.format("%s/outputTextFiles/player2_output.txt", basePath),1), "player 2 initial hand [2,3,4,5]"));
+        assert(Objects.equals(CheckOutputFile(String.format("%s/outputTextFiles/player2_output.txt", basePath),1), "player 2 initial hand [2, 3, 4, 5]"));
     }
     @Test
     public void testDiscardCard() {
-        player1.discardCard();
+        player2.discardCard();
         assert (player1.getCards().size()==0);
     }
     @Test
