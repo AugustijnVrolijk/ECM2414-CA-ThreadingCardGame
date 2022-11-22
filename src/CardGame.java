@@ -22,10 +22,9 @@ public class CardGame{
         // get num of players and pack file name from user
         Scanner userInput = new Scanner(System.in);  // Create a Scanner object
         int numPlayers = 0;
-
         System.out.println("Please enter the number of players:");
         try {
-            numPlayers = userInput.nextInt();  // Read user input
+            numPlayers = userInput.nextInt();// Read user input
         } catch (InputMismatchException e) { // exception happens when input is not int
             System.out.println("Invalid input for players");
         }
@@ -59,7 +58,6 @@ public class CardGame{
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
             String line;
-            //System.out.println(line + "this is line ");
 
             while ((line = br.readLine()) != null) { //while each line contains something
                 lineNum++; // count lines
@@ -96,8 +94,7 @@ public class CardGame{
 
         while ((line = br.readLine()) != null) {
             int cardNum = Integer.parseInt(line); // get card num from file
-            int id = cards.size();
-            Card card = new Card(cardNum,id); // creates card object
+            Card card = new Card(cardNum); // creates card object
             cards.add(card); // adds to hashmap cards in CardGame
         }
     }
@@ -108,13 +105,13 @@ public class CardGame{
         for (int i = 0; i < numPlayers; i++){
             int id = players.size() + 1; // id cannot be 0 as no card has that value
 
-            Player player = new Player(id); // thread created
+            Player player = new Player(id); // player/deck creation
             players.add(player);
 
             CardDeck deck = new CardDeck(id);
             decks.add(deck);
         }
-        Player.setNumberOfPlayers(numPlayers);
+        Player.setNumberOfPlayers(numPlayers); //setup static variable in player class
     }
 
     public void dealCards(){
@@ -142,11 +139,11 @@ public class CardGame{
     }
 
     public void setUpTopology(int numPlayers){
-        players.get(0).setDeckBefore(decks.get(numPlayers-1));
+        players.get(0).setDeckBefore(decks.get(numPlayers-1)); //assign deck before for first player as the last deck
         players.get(0).setDeckAfter(decks.get(0));
 
         for (int i = 1; i<numPlayers; i++){
-            players.get(i).setDeckBefore(decks.get(i-1));
+            players.get(i).setDeckBefore(decks.get(i-1)); //assign decks to the rest of players
             players.get(i).setDeckAfter(decks.get(i));
         }
     }
