@@ -22,14 +22,12 @@ public class TestCardGame {
         game.initialisePlayersAndDecks(4);
         game.dealCards();
 
-        System.out.println(game.decks.size());
-
+        for (Player player: game.players){
+            assert (player.getCards().size() == 4);
+        }
 
         for (CardDeck deck: game.decks){
-            System.out.println("Deck: "+deck.getDeckId());
-            for (Card card: deck.getCardList()){
-                System.out.println(card.getCardNumber());
-            }
+            assert (deck.getCardList().size() == 4);
         }
     }
 
