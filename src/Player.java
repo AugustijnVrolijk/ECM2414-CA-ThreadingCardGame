@@ -124,8 +124,7 @@ public class Player extends Thread {
                 System.out.println("Deck " + deckBefore.getDeckId() + " has is now of size " + deckBefore.getCardList().size());
                 System.out.println("Deck " + deckAfter.getDeckId() + " has is now of size " + deckAfter.getCardList().size());
             }
-
-            if(hasPlayed) {
+            else {
                 synchronized (lock) {
                     incrementIsReady();
                     hasPlayed = false;
