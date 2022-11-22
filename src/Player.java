@@ -11,10 +11,12 @@ public class Player extends Thread {
     private CardDeck deckAfter;
     //remove cards to
     private int preferredCard;
-    private static boolean playing = true;
     Random rand = new Random();
     private boolean hasPlayed = false;
+    private static boolean playing = true;
     private static int isReady = 0;
+    private static int winningThread;
+    private static int numberOfPlayers;
     static Object lock = new Object();
 
     Player(int playerId) {
@@ -23,6 +25,10 @@ public class Player extends Thread {
         String basePath = (new File("")).getAbsolutePath();
         outputFile = new File(String.format("%s/outputTextFiles/player%d_output.txt", basePath, playerId));
         appendToOutputFile(String.format("Player %d enters the game", playerId), false);
+    }
+
+    public static void setNumberOfPlayers(int numberOfPlayers) {
+        Player.numberOfPlayers = numberOfPlayers;
     }
 
     public void appendInitialHand(){
@@ -98,7 +104,8 @@ public class Player extends Thread {
 
     public void stopPlayers(){
         playing = false;
-        notifyAll();
+        winningThread = playerId;
+        lock.notifyAll();
     }
 
     private synchronized void incrementIsReady() {
@@ -108,27 +115,35 @@ public class Player extends Thread {
     private synchronized void resetIsReady() {
         isReady = 0;
     }
-
+    @Override
     public void run() {
         while(playing){
-            if (checkHand()){
-                System.out.println("The game has apparently been won by player " + playerId);
-                stopPlayers();
-                deckAfter.recordFinalHand();
-            }
+            synchronized (lock) {
+                if (checkHand()){
+                    System.out.println("The game has apparently been won by player " + playerId);
+                    stopPlayers();
+                    appendToOutputFile(String.format("player %d exits",this.playerId), true);
+                    appendToOutputFile(String.format("Player %d final hand: %d %d %d %d",
+                            playerId,
+                            cards.get(0).getCardNumber(),
+                            cards.get(1).getCardNumber(),
+                            cards.get(2).getCardNumber(),
+                            cards.get(3).getCardNumber()), true);
+                    deckAfter.recordFinalHand();
+                    stop();
+                }
 
-            if(!hasPlayed) {
-                deckBefore.removeCard(drawCard());
-                deckAfter.addCard(discardCard());
-                hasPlayed = true;
-                System.out.println("Deck " + deckBefore.getDeckId() + " has is now of size " + deckBefore.getCardList().size());
-                System.out.println("Deck " + deckAfter.getDeckId() + " has is now of size " + deckAfter.getCardList().size());
-            }
-            else {
-                synchronized (lock) {
+                if(!hasPlayed) {
+                    deckBefore.removeCard(drawCard());
+                    deckAfter.addCard(discardCard());
+                    hasPlayed = true;
+                    System.out.println("Deck " + deckBefore.getDeckId() + " has is now of size " + deckBefore.getCardList().size());
+                    System.out.println("Deck " + deckAfter.getDeckId() + " has is now of size " + deckAfter.getCardList().size());
+                }
+                if(hasPlayed) {
                     incrementIsReady();
                     hasPlayed = false;
-                    if (isReady < 4) { //number of players
+                    if (isReady < numberOfPlayers) { //number of players
                         try {
                             System.out.println("player " + playerId + " has gotten to the wait clause, number of threads which have said isReady is : " + isReady);
                             lock.wait();
@@ -143,5 +158,15 @@ public class Player extends Thread {
 
             }
         }
+        appendToOutputFile(String.format("player %d has informed player %d that player %d has won",winningThread, this.playerId, winningThread), true);
+        appendToOutputFile(String.format("player %d exits",this.playerId), true);
+        appendToOutputFile(String.format("Player %d final hand: %d %d %d %d",
+                playerId,
+                cards.get(0).getCardNumber(),
+                cards.get(1).getCardNumber(),
+                cards.get(2).getCardNumber(),
+                cards.get(3).getCardNumber()), true);
+        deckAfter.recordFinalHand();
+        stop();
     }
 }

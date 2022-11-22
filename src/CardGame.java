@@ -18,7 +18,6 @@ public class CardGame{
     public static void main(String[] args) throws IOException {
         CardGame game = new CardGame();
     }
-
     public void setUpGame() throws IOException {
         // get num of players and pack file name from user
         Scanner userInput = new Scanner(System.in);  // Create a Scanner object
@@ -114,6 +113,7 @@ public class CardGame{
             CardDeck deck = new CardDeck(id);
             decks.add(deck);
         }
+        Player.setNumberOfPlayers(numPlayers);
     }
 
     public void dealCards(){

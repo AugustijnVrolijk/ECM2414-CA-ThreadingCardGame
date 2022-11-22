@@ -32,7 +32,7 @@ public class CardDeck {
         try (FileWriter f = new FileWriter(outputFile, false);
              BufferedWriter b = new BufferedWriter(f);
              PrintWriter p = new PrintWriter(b)) {
-            p.println(String.format("Deck %d contents: %d %d %d %d",cardList.get(0).getCardNumber(), cardList.get(1).getCardNumber(), cardList.get(2).getCardNumber(), cardList.get(3).getCardNumber()));}
+            p.println(String.format("Deck %d contents: %d %d %d %d",deckId,cardList.get(0).getCardNumber(), cardList.get(1).getCardNumber(), cardList.get(2).getCardNumber(), cardList.get(3).getCardNumber()));}
         catch (IOException i) { i.printStackTrace(); }
     }
 }
