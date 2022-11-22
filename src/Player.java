@@ -101,9 +101,19 @@ public class Player extends Thread {
         playing = false;
         notifyAll();
     }
-    public synchronized void run() {
+
+    private synchronized void incrementIsReady() {
+        isReady += 1;
+    }
+
+    private synchronized void resetIsReady() {
+        isReady = 0;
+    }
+
+    public void run() {
         while(playing){
             if (checkHand()){
+                System.out.println("The game has apparently been won by player " + playerId);
                 stopPlayers();
                 deckAfter.recordFinalHand();
             }
@@ -121,21 +131,20 @@ public class Player extends Thread {
             }
 
             if(hasDrawnCard && hasDiscardedCard) {
-                hasDiscardedCard = false;
-                hasDrawnCard = false;
-                isReady += 1;
-
                 synchronized (lock) {
+                    incrementIsReady();
+                    hasDiscardedCard = false;
+                    hasDrawnCard = false;
                     if (isReady < 4) { //number of players
                         try {
                             System.out.println("player " + playerId + " has gotten to the wait clause, number of threads which have said isReady is : " + isReady);
                             lock.wait();
                             System.out.println("");}
-                        catch (InterruptedException ignored){}
+                        catch (InterruptedException ignored){System.out.println("Interrupted Exception caught");}
                     } else {
                         System.out.println("player " + playerId + " has gotten to the else clause, isReady is currently equal to " + isReady);
                         lock.notifyAll();
-                        isReady = 0;
+                        resetIsReady();
                     }
                 }
 
