@@ -1,11 +1,8 @@
 public class Card {
-
-    private int cardId;
     private int cardNumber;
 
-    public Card(int cardNumber, int cardId) {
+    public Card(int cardNumber) {
         synchronized (Card.class){
-            this.cardId = cardId;
             this.cardNumber = cardNumber;
         }
     }

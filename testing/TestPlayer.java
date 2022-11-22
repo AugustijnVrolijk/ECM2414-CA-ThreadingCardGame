@@ -12,10 +12,10 @@ public class TestPlayer {
     @Before
     public void setUp() {
         player = new Player(0);
-        card = new Card(1,0);
-        card1 = new Card(1,0);
-        card2 = new Card(1,0);
-        card3 = new Card(1,0);
+        card = new Card(1);
+        card1 = new Card(1);
+        card2 = new Card(1);
+        card3 = new Card(1);
     }
 
     @Test
