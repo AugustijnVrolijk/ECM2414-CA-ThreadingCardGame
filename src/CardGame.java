@@ -48,7 +48,6 @@ public class CardGame{
         for (Player player: players){player.start();}
     }
 
-
     public boolean checkPack(int numPlayers, String fileName) throws IOException {
 
         boolean valid = true;
