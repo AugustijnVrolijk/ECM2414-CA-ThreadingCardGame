@@ -23,21 +23,28 @@ public class CardGame{
         Scanner userInput = new Scanner(System.in);  // Create a Scanner object
         int numPlayers = 0;
         System.out.println("Please enter the number of players:");
-        try {
-            numPlayers = userInput.nextInt();// Read user input
-        } catch (InputMismatchException e) { // exception happens when input is not int
-            System.out.println("Invalid input for players");
+        boolean invalidInput = true;
+
+        while(invalidInput) {
+            try {
+                numPlayers = userInput.nextInt();// Read user input
+                invalidInput = false;
+            } catch (InputMismatchException e) { // exception happens when input is not int
+                System.out.println("Invalid input for players");
+                userInput.nextLine();
+            }
         }
 
-        System.out.println("Please enter location of pack to load:");
-        userInput.nextLine(); // nextInt does not take /n so the next call will consume this and then wait for user input for the pack
-        String fileName = userInput.nextLine(); // Read user input
-        if(checkPack(numPlayers, fileName)){ // check if pack is valid before reading
-            readPack(fileName);
-        } else {
-            System.out.println("Pack Invalid");
+        invalidInput = true;
+        userInput.nextLine();
+        while(invalidInput) {
+            System.out.println("Please enter location of pack to load:");
+            String fileName = userInput.nextLine(); // Read user input
+            if (checkPack(numPlayers, fileName)) { // check if pack is valid before reading
+                invalidInput = false;
+                readPack(fileName);
+            }
         }
-
         initialisePlayersAndDecks(numPlayers);
         dealCards();
         setUpTopology(numPlayers);
