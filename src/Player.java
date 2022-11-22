@@ -13,8 +13,7 @@ public class Player extends Thread {
     private int preferredCard;
     private static boolean playing = true;
     Random rand = new Random();
-    private boolean hasDrawnCard = false;
-    private boolean hasDiscardedCard = false;
+    private boolean hasPlayed = false;
     private static int isReady = 0;
     static Object lock = new Object();
 
@@ -118,23 +117,18 @@ public class Player extends Thread {
                 deckAfter.recordFinalHand();
             }
 
-            if(!hasDrawnCard) {
+            if(!hasPlayed) {
                 deckBefore.removeCard(drawCard());
-                hasDrawnCard = true;
-                System.out.println("Deck " + deckBefore.getDeckId() + " has is now of size " + deckBefore.getCardList().size());
-            }
-
-            if(!hasDiscardedCard) {
                 deckAfter.addCard(discardCard());
-                hasDiscardedCard = true;
+                hasPlayed = true;
+                System.out.println("Deck " + deckBefore.getDeckId() + " has is now of size " + deckBefore.getCardList().size());
                 System.out.println("Deck " + deckAfter.getDeckId() + " has is now of size " + deckAfter.getCardList().size());
             }
 
-            if(hasDrawnCard && hasDiscardedCard) {
+            if(hasPlayed) {
                 synchronized (lock) {
                     incrementIsReady();
-                    hasDiscardedCard = false;
-                    hasDrawnCard = false;
+                    hasPlayed = false;
                     if (isReady < 4) { //number of players
                         try {
                             System.out.println("player " + playerId + " has gotten to the wait clause, number of threads which have said isReady is : " + isReady);
