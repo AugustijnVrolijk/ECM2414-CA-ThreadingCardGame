@@ -122,10 +122,10 @@ public class Player extends Thread {
             synchronized (lock) {
                 if (checkHand()){
                     System.out.printf("Player %d wins%n", playerId);
-                    stopPlayers();
                     appendToOutputFile(String.format("player %d exits", playerId), true);
                     appendToOutputFile(String.format("Player %d final hand: %s", playerId, cards.toString()), true);
                     deckAfter.recordFinalHand();
+                    stopPlayers();
                     stop();
                 }
 

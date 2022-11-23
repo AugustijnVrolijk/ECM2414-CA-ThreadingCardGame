@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.*;
-
 public class CardGame{
 
     public ArrayList<Player> players = new ArrayList<>();
