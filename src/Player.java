@@ -103,7 +103,7 @@ public class Player extends Thread {
         this.deckAfter = deckAfter;
     }
 
-    public void stopPlayers(){
+    public synchronized void stopPlayers(){
         playing = false; //turns playing false so main loop in run stops
         winningThread = playerId; //sets this player as the winning player to inform others
         lock.notifyAll(); //removes lock in case other threads are waiting for others to finish
