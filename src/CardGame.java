@@ -123,7 +123,7 @@ public class CardGame{
     public void dealCards(){
         // deals 4 cards to each player
         Collections.shuffle(cards);
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++){  //i set as 4 in order to deal 4 cards, iterate through loop 4 times dealing one card each time
             for (Player player : players){
                 player.addCard(cards.get(0));
                 cards.remove(0);
@@ -136,7 +136,7 @@ public class CardGame{
         }
 
         // deals the rest to each deck of cards
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++){  //i set as 4 in order to deal 4 cards
             for (CardDeck deck: decks){
                 deck.addCard(cards.get(0));
                 cards.remove(0);
