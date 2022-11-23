@@ -13,26 +13,17 @@ public class TestCardGame {
     String basePath = (new File("")).getAbsolutePath();
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         game = new CardGame("test");
+        game.readPack("pack.txt");
+        game.initialisePlayersAndDecks(4);
+        game.dealCards();
+        game.setUpTopology(4);
     }
 
     @Test
     public void testCheckPack() throws IOException {
         assert game.checkPack(4,"pack.txt");
-    }
-
-    @Test
-    public void testReadPack() throws IOException {
-        game.readPack("pack.txt");
-    }
-
-    @Before
-    public void setUp2() throws IOException {
-        game.readPack("pack2.txt");
-        game.initialisePlayersAndDecks(4);
-        game.dealCards();
-        game.setUpTopology(4);
     }
 
     @Test

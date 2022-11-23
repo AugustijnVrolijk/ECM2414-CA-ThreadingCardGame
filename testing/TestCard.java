@@ -7,11 +7,13 @@ public class TestCard {
 
     Card testCard1;
     Card testCard2;
+
     @Before
     public void setUp() {
          testCard1 = new Card(1);
          testCard2 = new Card(256000000);
     }
+
     @Test
     public void testCard() {
         assert (testCard1.getCardNumber() == 1);
