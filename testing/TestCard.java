@@ -5,8 +5,6 @@ import java.util.Objects;
 
 public class TestCard {
 
-
-
     Card testCard1;
     Card testCard2;
     @Before

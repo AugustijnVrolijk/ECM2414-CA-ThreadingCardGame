@@ -1,10 +1,16 @@
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.Objects;
 
 public class TestCardGame {
 
     private CardGame game;
+    String basePath = (new File("")).getAbsolutePath();
 
     @Before
     public void setUp() {
@@ -23,7 +29,7 @@ public class TestCardGame {
 
     @Before
     public void setUp2() throws IOException {
-        game.readPack("pack.txt");
+        game.readPack("pack2.txt");
         game.initialisePlayersAndDecks(4);
         game.dealCards();
         game.setUpTopology(4);
@@ -53,13 +59,5 @@ public class TestCardGame {
             assert (player.getPlayerId()==player.getDeckAfter().getDeckId());
         }
     }
-
-    @Test
-    public void testThreads() throws InterruptedException {
-        game.startPlayers();
-        game.players.get(0).join();
-        // todos
-    }
-
 
 }
