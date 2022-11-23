@@ -9,6 +9,7 @@ public class Card {
     public int getCardNumber() {
         return cardNumber;
     }
+
     @Override
     public String toString() {
         return String.valueOf(cardNumber);
